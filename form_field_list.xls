@@ -1,0 +1,12 @@
+
+		<html>
+		<head>
+		<title>Список вопросов формы # 1</title>
+		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+		<style>
+			td {mso-number-format:\@;}
+			.number0 {mso-number-format:0;}
+			.number2 {mso-number-format:Fixed;}
+		</style>
+		</head>
+		<body><table border="1"><tr><td>ID</td><td>Акт.</td><td>Сорт.</td><td>Обяз.</td><td>Вопрос</td><td>Тип поля</td><td>Комментарий</td></tr><tr><td>1</td><td>Да</td><td>100</td><td>Да</td><td>Ваше имя</td><td>text</td><td>&nbsp;</td></tr><tr><td>2</td><td>Да</td><td>200</td><td>Да</td><td>Компания/Должность</td><td>text</td><td>&nbsp;</td></tr><tr><td>3</td><td>Да</td><td>300</td><td>Да</td><td>Email</td><td>text</td><td>&nbsp;</td></tr><tr><td>4</td><td>Да</td><td>400</td><td>Да</td><td>Номер телефона</td><td>text</td><td>&nbsp;</td></tr><tr><td>5</td><td>Да</td><td>500</td><td>Нет</td><td>Сообщение</td><td>textarea</td><td>&nbsp;</td></tr></table></body></html>
