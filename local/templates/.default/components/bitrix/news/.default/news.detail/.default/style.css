@@ -238,8 +238,8 @@ body {
   display: none;
 }
 .article-card {
-    max-width: 900px; /* Ограничивает ширину, чтобы вёрстка не разъезжалась */
-    margin: 0 auto;   /* Центрирует карточку по горизонтали */
+    max-width: 900px; 
+    margin: 0 auto;   
     padding: 20px;
 }
 
@@ -250,7 +250,7 @@ body {
 }
 
 .article-card__image {
-    flex: 0 0 350px; /* Фиксирует ширину картинки слева */
+    flex: 0 0 350px; 
 }
 
 .article-card__image img {
@@ -260,7 +260,7 @@ body {
 }
 
 .article-card__text {
-    flex: 1; /* Отдаёт оставшееся место тексту справа */
+    flex: 1; 
 }
 
 #mocha-report.fail .test.pass {
