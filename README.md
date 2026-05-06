@@ -12,4 +12,5 @@
 ## Установка и запуск
 1. Скачайте или склонируйте репозиторий:
    ```bash
-   cd expense-tracker
+   git clone https://github.com/vasinamargarita38-design/Bitrix.git
+cd Bitrix
