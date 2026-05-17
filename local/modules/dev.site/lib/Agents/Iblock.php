@@ -11,7 +11,7 @@ class Iblock
             $logIblockId = ($iblock = $res->Fetch()) ? $iblock['ID'] : false;
 
             if ($logIblockId) {
-                // 1. Выбираем ВСЕ элементы, от новых к старым
+                
                 $resElements = \CIBlockElement::GetList(
                     ['ID' => 'DESC'],
                     ['IBLOCK_ID' => $logIblockId],
@@ -25,7 +25,6 @@ class Iblock
                     $allIds[] = $el['ID'];
                 }
 
-                // 2. Если элементов больше 10, отрезаем первые 10, а остальные удаляем
                 if (count($allIds) > 10) {
                     $deleteIds = array_slice($allIds, 10);
                     foreach ($deleteIds as $id) {
