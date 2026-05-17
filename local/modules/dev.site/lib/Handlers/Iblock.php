@@ -17,7 +17,6 @@ class Iblock
             return;
         }
 
-        // Добавляем \ перед CIBlock
         $res = \CIBlock::GetList([], ['CODE' => 'LOG']);
         $logIblockId = ($iblock = $res->Fetch()) ? $iblock['ID'] : false;
 
