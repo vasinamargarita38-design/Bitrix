@@ -4,46 +4,29 @@ use Bitrix\Main\Loader;
 
 class CustomNewsGrouped extends \CBitrixComponent
 {
-	/**
-	 * Âàëèäàöèÿ è ïîäãîòîâêà âõîäíûõ ïàğàìåòğîâ êîìïîíåíòà
-	 */
 	public function onPrepareComponentParams($arParams)
 	{
-		// Òèï èíôîáëîêà — îáÿçàòåëüíàÿ ñòğîêà
 		$arParams["IBLOCK_TYPE"] = trim($arParams["IBLOCK_TYPE"]);
-		
-		// ID èíôîáëîêà — ïğèâîäèì ê ÷èñëó
 		$arParams["IBLOCK_ID"] = intval($arParams["IBLOCK_ID"]);
-		
-		// Êîëè÷åñòâî ıëåìåíòîâ
 		$arParams["NEWS_COUNT"] = intval($arParams["NEWS_COUNT"]) > 0 ? intval($arParams["NEWS_COUNT"]) : 20;
-
-		// Ïğàâèëüíîå ÒÇ-ïîäêëş÷åíèå ôèëüòğàöèè ïî ïîëÿì ÷åğåç FILTER_NAME (êàê â news.list)
 		$arParams["FILTER_NAME"] = trim($arParams["FILTER_NAME"]);
-
 		$arParams["FILTER_NAME_PART"] = trim($arParams["FILTER_NAME_PART"]);
 
 		return $arParams;
 	}
 
-	/**
-	 * Ïğîâåğêà ïîäêëş÷åíèÿ ìîäóëåé è âàëèäíîñòè êğèòè÷åñêèõ ïàğàìåòğîâ
-	 */
 	protected function checkModules()
 	{
 		if (!Loader::includeModule("iblock")) {
-			throw new \Exception("Ìîäóëü Èíôîğìàöèîííûõ áëîêîâ íå óñòàíîâëåí.");
+			throw new \Exception("ĞœĞ¾Ğ´ÑƒĞ»ÑŒ Ğ˜Ğ½Ñ„Ğ¾Ñ€Ğ¼Ğ°Ñ†Ğ¸Ğ¾Ğ½Ğ½Ñ‹Ñ… Ğ±Ğ»Ğ¾ĞºĞ¾Ğ² Ğ½Ğµ ÑƒÑÑ‚Ğ°Ğ½Ğ¾Ğ²Ğ»ĞµĞ½.");
 		}
 
 		if (empty($this->arParams["IBLOCK_TYPE"])) {
-			throw new \Exception("Íå óêàçàí îáÿçàòåëüíûé ïàğàìåòğ: Òèï èíôîáëîêà (IBLOCK_TYPE).");
+			throw new \Exception("ĞĞµ ÑƒĞºĞ°Ğ·Ğ°Ğ½ Ğ¾Ğ±ÑĞ·Ğ°Ñ‚ĞµĞ»ÑŒĞ½Ñ‹Ğ¹ Ğ¿Ğ°Ñ€Ğ°Ğ¼ĞµÑ‚Ñ€: Ğ¢Ğ¸Ğ¿ Ğ¸Ğ½Ñ„Ğ¾Ğ±Ğ»Ğ¾ĞºĞ° (IBLOCK_TYPE).");
 		}
 	}
 
-	/**
-	 * Ôîğìèğîâàíèå ìàññèâà ôèëüòğàöèè ñ ó÷åòîì äèíàìè÷åñêîãî âíåøíåãî ôèëüòğà
-	 */
-		protected function prepareFilter()
+	protected function prepareFilter()
 	{
 		$arFilter = array(
 			"IBLOCK_TYPE" => $this->arParams["IBLOCK_TYPE"],
@@ -55,23 +38,18 @@ class CustomNewsGrouped extends \CBitrixComponent
 			$arFilter["IBLOCK_ID"] = $this->arParams["IBLOCK_ID"];
 		}
 
-		// Åñëè â âèçóàëüíîì ğåäàêòîğå ââåëè ñëîâî äëÿ ôèëüòğàöèè íàçâàíèé
 		if (!empty($this->arParams["FILTER_NAME_PART"])) {
-			$arFilter["%NAME"] = $this->arParams["FILTER_NAME_PART"]; // Çíàê % îçíà÷àåò ïîèñê ïîäñòğîêè (LIKE â SQL)
+			$arFilter["%NAME"] = $this->arParams["FILTER_NAME_PART"]; 
 		}
 
 		return $arFilter;
 	}
 
-	/**
-	 * Âûáîğêà ıëåìåíòîâ è èõ ãğóïïèğîâêà ïî ID èíôîáëîêîâ
-	 */
 	protected function getElements()
 	{
 		$arResult = array("ITEMS" => array());
 		$arFilter = $this->prepareFilter();
 
-		// Ïîëÿ äëÿ âûáîğêè
 		$arSelect = array(
 			"ID", 
 			"IBLOCK_ID", 
@@ -90,36 +68,27 @@ class CustomNewsGrouped extends \CBitrixComponent
 
 		while ($obElement = $dbElements->GetNextElement()) {
 			$arItem = $obElement->GetFields();
-			
-			// ÒÇ: Ãğóïïèğóåì ıëåìåíòû â $arResult['ITEMS'] ïî ID èíôîáëîêîâ
 			$arResult["ITEMS"][$arItem["IBLOCK_ID"]][] = $arItem;
 		}
 
 		return $arResult;
 	}
 
-	/**
-	 * Òî÷êà âõîäà êîìïîíåíòà
-	 */
 	public function executeComponent()
 	{
 		try {
-			// ÒÇ: Ïğîâåğêà ïàğàìåòğîâ è âûêèäûâàíèå èñêëş÷åíèÿ
 			$this->checkModules();
 
-			// Ïîëó÷àåì âíåøíèé äèíàìè÷åñêèé ôèëüòğ äëÿ ãåíåğàöèè óíèêàëüíîãî êåøà
 			$arExternalFilter = (!empty($this->arParams["FILTER_NAME"]) && is_array($GLOBALS[$this->arParams["FILTER_NAME"]])) 
 				? $GLOBALS[$this->arParams["FILTER_NAME"]] 
 				: array();
 
-			// Ñòàğò êåøèğîâàíèÿ (çàâèñèò îò ïàğàìåòğîâ è âíåøíåãî ôèëüòğà)
 			if ($this->startResultCache(false, array($arExternalFilter))) {
 				$this->arResult = $this->getElements();
 				$this->includeComponentTemplate();
 			}
 			
 		} catch (\Exception $e) {
-			// ÒÇ: Âûâîä îøèáîê ÷åğåç ShowError ïğè âîçíèêíîâåíèè èñêëş÷åíèé
 			$this->abortResultCache();
 			ShowError($e->getMessage());
 		}
