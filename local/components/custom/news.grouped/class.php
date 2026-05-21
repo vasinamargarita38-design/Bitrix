@@ -39,7 +39,7 @@ class CustomNewsGrouped extends \CBitrixComponent
 		}
 
 		if (!empty($this->arParams["FILTER_NAME_PART"])) {
-			$arFilter["%NAME"] = $this->arParams["FILTER_NAME_PART"]; 
+			$arFilter["%NAME"] = $this->arParams["FILTER_NAME_PART"];
 		}
 
 		return $arFilter;
