@@ -1,13 +1,9 @@
 <?php
-/**
- * Полный CRUD-клиент Яндекс.Диска (монолитный, PHP 8.x, Bitrix)
- * Все переменные для списка файлов: $items
- */
+
 require_once($_SERVER["DOCUMENT_ROOT"] . "/bitrix/header.php");
 error_reporting(E_ALL);
 ini_set('display_errors', 1);
 
-// Ваш OAuth-токен (замените при необходимости)
 $yandexToken = 'y0__wgBEJKD8dcDGNGxQiDV6O3VF4sVTdJykmQTfby48uIDG3V_d63C';
 $yandexRoot  = 'disk:/';
 $alertMessage = '';
@@ -18,7 +14,6 @@ $request = \Bitrix\Main\Application::getInstance()->getContext()->getRequest();
 if ($request->isPost() && check_bitrix_sessid()) {
     $action = $request->getPost('act');
 
-    // ================== CREATE: загрузка файла ==================
     if ($action === 'c' && isset($_FILES['yfile'])) {
         $file = $_FILES['yfile'];
         if ($file['error'] === UPLOAD_ERR_OK) {
@@ -69,7 +64,6 @@ if ($request->isPost() && check_bitrix_sessid()) {
         }
     }
 
-    // ================== UPDATE: переименование ==================
     if ($action === 'u') {
         $oldPath = $request->getPost('item_path');
         $newName = $request->getPost('new_name');
@@ -93,7 +87,6 @@ if ($request->isPost() && check_bitrix_sessid()) {
         }
     }
 
-    // ================== DELETE: удаление ==================
     if ($action === 'd') {
         $deletePath = $request->getPost('item_path');
         if (!empty($deletePath)) {
@@ -114,8 +107,7 @@ if ($request->isPost() && check_bitrix_sessid()) {
     }
 }
 
-// ================== READ: получение списка файлов ==================
-$items = [];   // <-- Везде используется это имя
+$items = [];
 $listUrl = 'https://cloud-api.yandex.net/v1/disk/resources?path='
           . urlencode($yandexRoot) . '&limit=100';
 
@@ -126,11 +118,7 @@ $listResp = $http->get($listUrl);
 if ($http->getStatus() === 200) {
     $parsed = \Bitrix\Main\Web\Json::decode($listResp);
     $items = $parsed['_embedded']['items'] ?? [];
-} else {
-    // Если хотите видеть ошибку, можно раскомментировать:
-    // $alertMessage = 'Не удалось получить список. Код: ' . $http->getStatus();
-    // $alertClass = 'danger';
-}
+} 
 ?>
 
 <div style="padding: 20px; max-width: 1100px; margin: 20px auto; font-family: Arial, sans-serif; color: #000; background: #fff; border: 1px solid #dee2e6; border-radius: 6px;">
@@ -142,7 +130,6 @@ if ($http->getStatus() === 200) {
         </div>
     <?php endif; ?>
 
-    <!-- Форма загрузки (Create) -->
     <div style="background: #f8f9fa; border: 1px solid #dee2e6; padding: 15px; border-radius: 4px; margin-bottom: 25px;">
         <h5 style="margin-top: 0;"><b>Загрузить новый файл на Диск:</b></h5>
         <form method="POST" enctype="multipart/form-data" style="margin-top: 10px; display: flex; gap: 10px; align-items: center;">
@@ -153,7 +140,6 @@ if ($http->getStatus() === 200) {
         </form>
     </div>
 
-    <!-- Таблица файлов (Read, Update, Delete) -->
     <h5 style="margin-bottom: 10px;"><b>Содержимое корневого каталога (disk:/):</b></h5>
     <table style="width: 100%; border-collapse: collapse; background: #fff; border: 1px solid #dee2e6;">
         <thead>
