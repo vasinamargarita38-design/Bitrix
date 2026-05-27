@@ -1,10 +1,6 @@
 <?php
 namespace Yandex\Disk;
 
-/**
- * Оригинальный класс библиотеки jack-theripper/yandex
- * PHP 8.x Strict Compliance
- */
 class DiskClient
 {
     protected $accessToken;
